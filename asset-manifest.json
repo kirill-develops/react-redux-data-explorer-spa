@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/react-redux-axios-spa/static/css/main.adc8b29e.css",
-    "main.js": "/react-redux-axios-spa/static/js/main.8e929ee5.js",
-    "index.html": "/react-redux-axios-spa/index.html",
-    "main.adc8b29e.css.map": "/react-redux-axios-spa/static/css/main.adc8b29e.css.map",
-    "main.8e929ee5.js.map": "/react-redux-axios-spa/static/js/main.8e929ee5.js.map"
+    "main.css": "/react-redux-data-explorer-spa/static/css/main.adc8b29e.css",
+    "main.js": "/react-redux-data-explorer-spa/static/js/main.8e929ee5.js",
+    "index.html": "/react-redux-data-explorer-spa/index.html",
+    "main.adc8b29e.css.map": "/react-redux-data-explorer-spa/static/css/main.adc8b29e.css.map",
+    "main.8e929ee5.js.map": "/react-redux-data-explorer-spa/static/js/main.8e929ee5.js.map"
   },
   "entrypoints": [
     "static/css/main.adc8b29e.css",
