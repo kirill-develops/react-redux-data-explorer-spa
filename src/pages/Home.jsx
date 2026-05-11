@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 import Styles from "../styles/global.module.scss";
@@ -31,6 +31,10 @@ export default function Home() {
    const cardDeckClass = isFetching
       ? [Styles.card_deck, Styles.disabled].join(" ")
       : Styles.card_deck;
+
+   useEffect(() => {
+      document.title = "Home | GlobeQuery";
+   }, []);
 
    const renderContent = useCallback(() => {
       if (isLoading) return <h2>Loading...</h2>;

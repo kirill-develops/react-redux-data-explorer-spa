@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Styles from "../styles/global.module.scss";
 import CountrySelect from "../components/CountrySelect/CountrySelect";
 import UniversityList from "../components/UniversityList/UniversityList";
 
 const Universities = () => {
    const [selectedCountry, setSelectedCountry] = useState("");
+
+   useEffect(() => {
+      document.title = "University by Country Search | GlobeQuery";
+   }, []);
 
    return (
       <main className={Styles.page_layout}>

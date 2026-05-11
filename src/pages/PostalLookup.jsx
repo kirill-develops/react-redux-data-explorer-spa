@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 
 import CardStyles from "../components/Card/Card.module.scss";
@@ -27,6 +27,10 @@ const PostalLookup = () => {
    const cardDeckClass = isFetching
       ? [GlobalStyles.card_deck__postal, GlobalStyles.disabled].join(" ")
       : GlobalStyles.card_deck__postal;
+   
+    useEffect(() => {
+         document.title = "Postal Lookup | GlobeQuery";
+      }, []);
 
    const renderContent = () => {
       if (isUninitialized)
