@@ -16,17 +16,17 @@ const staggeredBaseQuery = retry(
          extraOptions,
       );
 
-      // bail out of re-tries immediately if unauthorized,
-      // because we know successive re-retries would be redundant
-      if (result.error?.status === 401) {
+      // Bail immediately on any client error (4xx) — retrying won't resolve these
+      if (
+         result.error?.status === 401 ||
+         (typeof result.error?.status === "number" && result.error.status < 500)
+      ) {
          retry.fail(result.error);
       }
 
       return result;
    },
-   {
-      maxRetries: 5,
-   },
+   { maxRetries: 3 }, // 5 is excessive — 3 is standard for transient failures
 );
 
 function providesList(resultsWithIds, tagType) {
