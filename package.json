@@ -2,7 +2,7 @@
   "name": "kirill-tchentsov_launch-pad-react-code-challenge",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://kirill-develops.github.io/react-redux-axios-spa/",
+  "homepage": "https://kirill-develops.github.io/react-redux-data-explorer-spa/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.16.4",
