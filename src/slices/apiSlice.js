@@ -1,101 +1,133 @@
-import { createEntityAdapter } from '@reduxjs/toolkit';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { retry } from '@reduxjs/toolkit/dist/query';
+import { createEntityAdapter } from "@reduxjs/toolkit";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { retry } from "@reduxjs/toolkit/dist/query";
+
+const BASE_URL = "https://jsonplaceholder.typicode.com/posts";
 
 const postsAdapter = createEntityAdapter({});
 
 const initialState = postsAdapter.getInitialState();
 
 const staggeredBaseQuery = retry(
-  async (args, api, extraOptions) => {
-    const result = await fetchBaseQuery({ baseUrl: '' })(
-      args,
-      api,
-      extraOptions
-    )
+   async (args, api, extraOptions) => {
+      const result = await fetchBaseQuery({ baseUrl: "" })(
+         args,
+         api,
+         extraOptions,
+      );
 
-    // bail out of re-tries immediately if unauthorized,
-    // because we know successive re-retries would be redundant
-    if (result.error?.status === 401) {
-      retry.fail(result.error)
-    }
+      // bail out of re-tries immediately if unauthorized,
+      // because we know successive re-retries would be redundant
+      if (result.error?.status === 401) {
+         retry.fail(result.error);
+      }
 
-    return result
-  },
-  {
-    maxRetries: 5,
-  })
+      return result;
+   },
+   {
+      maxRetries: 5,
+   },
+);
 
 function providesList(resultsWithIds, tagType) {
-  return resultsWithIds
-    ? [
-        { type: tagType, id: 'LIST' },
-        ...resultsWithIds.map(({ id }) => ({ type: tagType, id })),
-      ]
-    : [{ type: tagType, id: 'LIST' }]
+   return resultsWithIds
+      ? [
+           { type: tagType, id: "LIST" },
+           ...resultsWithIds.map((id) => ({ type: tagType, id })),
+        ]
+      : [{ type: tagType, id: "LIST" }];
 }
 
 export const apiSlice = createApi({
-  reducerPath: 'api',
-  baseQuery: staggeredBaseQuery,
-  tagTypes: ['Post'],
-  endpoints: (builder) => ({
-    getAllPosts: builder.query({
-      query: () => "https://jsonplaceholder.typicode.com/posts",
-      transformResponse: responseData => {
-        const resConvert = responseData.sort((a, b) => b.id - a.id)
+   reducerPath: "api",
+   baseQuery: staggeredBaseQuery,
+   tagTypes: ["Post"],
+   endpoints: (builder) => ({
+      getAllPosts: builder.query({
+         query: () => BASE_URL,
+         transformResponse: (responseData) => {
+            const resConvert = responseData.sort((a, b) => b.id - a.id);
 
-        return postsAdapter.setAll(initialState, resConvert)
-      },
-      providesTags: (result) => providesList(result.ids, 'Post'),
-    }),
-    addOnePost: builder.mutation({
-      query: (postData) => ({
-        url: "https://jsonplaceholder.typicode.com/posts",
-        method: 'post',
-        body: postData
+            return postsAdapter.setAll(initialState, resConvert);
+         },
+         providesTags: (result) => providesList(result.ids, "Post"),
       }),
-      invalidatesTags: (_result, _error, arg) => [
-        { type: 'Post', id: arg.id },
-        { type: 'Post', id: 'LIST' }]
-    }),
-    editOnePost: builder.mutation({
-      query: postData => ({
-        url: `https://jsonplaceholder.typicode.com/posts/${postData.id}`,
-        method: 'put',
-        body: postData
+      addOnePost: builder.mutation({
+         queryFn: () => ({
+            body: null,
+         }),
+         onQueryStarted(postData, { dispatch, queryFulfilled }) {
+            dispatch(
+               apiSlice.util.updateQueryData(
+                  "getAllPosts",
+                  undefined,
+                  (draft) => {
+                     postsAdapter.addOne(draft, {
+                        ...postData,
+                     });
+                  },
+               ),
+            );
+         },
       }),
-      invalidatesTags: (_result, _error, arg) => [{ type: 'Post', id: arg.id }]
-    }),
-    deleteOnePost: builder.mutation({
-      query: postId => ({
-        url: `https://jsonplaceholder.typicode.com/posts/${postId}`,
-        method: 'delete',
+      editOnePost: builder.mutation({
+         queryFn: () => ({
+            body: null,
+         }),
+         onQueryStarted(postData, { dispatch, queryFulfilled }) {
+            dispatch(
+               apiSlice.util.updateQueryData(
+                  "getAllPosts",
+                  undefined,
+                  (draft) => {
+                     postsAdapter.upsertOne(draft, postData);
+                  },
+               ),
+            );
+         },
       }),
-      invalidatesTags: (_result, _error, arg) => [{ type: 'Post', id: arg }]
-    })
-  })
+      deleteOnePost: builder.mutation({
+         queryFn: () => ({
+            body: null,
+         }),
+         onQueryStarted(postId, { dispatch, queryFulfilled }) {
+            dispatch(
+               apiSlice.util.updateQueryData(
+                  "getAllPosts",
+                  undefined,
+                  (draft) => {
+                     postsAdapter.removeOne(draft, postId);
+                  },
+               ),
+            );
+         },
+      }),
+   }),
 });
 
-export const { useGetAllPostsQuery,
-  useGetOnePostQuery,
-  useAddOnePostMutation,
-  useEditOnePostMutation,
-  useDeleteOnePostMutation,
-  usePrefetch } = apiSlice;
+export const {
+   useGetAllPostsQuery,
+   useGetOnePostQuery,
+   useAddOnePostMutation,
+   useEditOnePostMutation,
+   useDeleteOnePostMutation,
+   usePrefetch,
+} = apiSlice;
 
-export const { selectAll: getAllPosts, selectById: getPostById } = postsAdapter
-  .getSelectors(state => {
-    let newObj = {};
+export const { selectAll: getAllPosts, selectById: getPostById } =
+   postsAdapter.getSelectors((state) => {
+      let newObj = {};
 
-    if (Object.values(state.api.queries).length > 0) {
-      for (const value of Object.values(state.api.queries)) { 
-        if (value?.endpointName === 'getAllPosts'
-          && value?.status === 'fulfilled') {
-            newObj = value.data;
-        }
+      if (Object.values(state.api.queries).length > 0) {
+         for (const value of Object.values(state.api.queries)) {
+            if (
+               value?.endpointName === "getAllPosts" &&
+               value?.status === "fulfilled"
+            ) {
+               newObj = value.data;
+            }
+         }
       }
-    }
 
-    return !Object.values(newObj)[0] ? initialState : newObj;
-  })
+      return !Object.values(newObj)[0] ? initialState : newObj;
+   });

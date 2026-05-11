@@ -1,28 +1,29 @@
-import React, { useReducer } from 'react';
+import React, { useReducer } from "react";
 
-import Styles from './PostModal.module.scss';
-import PostModal from './PostModal';
-
-
+import Styles from "./PostModal.module.scss";
+import PostModal from "./PostModal";
 
 const CreatePostButton = () => {
-  const [newPost, toggleNewPost] = useReducer(checked => !checked, false);
+   const [postModal, togglePostModal] = useReducer(
+      (checked) => !checked,
+      false,
+   );
 
-
-  return newPost ? (
-    <PostModal
-      togglePost={toggleNewPost}
-      modalType={"add"}
-    />
-  ) : (
-    <button
-      type='button'
-      onClick={toggleNewPost}
-      className={Styles.button}
-    >
-      CREATE POST
-    </button>
-  );
+   return postModal ? (
+      <PostModal
+         toggleModal={togglePostModal}
+         modalType={"add"}
+         key={"new"}
+      />
+   ) : (
+      <button
+         type="button"
+         onClick={togglePostModal}
+         className={Styles.button}
+      >
+         CREATE POST
+      </button>
+   );
 };
 
 export default React.memo(CreatePostButton);

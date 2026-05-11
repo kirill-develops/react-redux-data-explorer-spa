@@ -1,66 +1,63 @@
-@use '../../styles/breakpoints'as*;
-@use '../../styles/mixins'as*;
-@use '../../styles/variables'as*;
+@use "../../styles/breakpoints" as *;
+@use "../../styles/mixins" as *;
+@use "../../styles/variables" as *;
 
 .card {
-  @include padding-large;
-  width: 100%;
-  border: 2px solid black;
-  border-radius: $brdr-radius-medium;
+   @include padding-large;
+   width: 100%;
+   border: 2px solid black;
+   border-radius: $brdr-radius-medium;
 
-  @include desktop {
-    flex: 1 2 2;
-    width: 48%;
-  }
+   @include desktop {
+      flex: 1 2 2;
+      width: 48%;
+   }
 
-  &__multi_row {
-    @extend .card;
-    width: fit-content;
-    margin: auto;
-  }
+   &__multi_row {
+      @extend .card;
+      width: fit-content;
+      margin: auto;
+   }
 }
 
 .title {
-  text-transform: uppercase;
+   text-transform: uppercase;
 }
 
 .body_wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  flex-direction: column;
-  gap: $padding-large;
+   display: flex;
+   justify-content: space-between;
+   align-items: flex-end;
+   flex-direction: column;
 
-  @include tablet {
-    flex-direction: row;
-    gap: $padding-xl;
-  }
+   @include tablet {
+      flex-direction: row;
+   }
 }
 
 .body {
-  margin: 0;
+   margin: 0;
 
-  @include tablet {
-    width: 75%;
-  }
+   @include tablet {
+      width: 75%;
+   }
 }
 
 .metrics {
-  min-width: min-content;
-  display: flex;
-  align-items: flex-end;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-  gap: $padding-small;
+   min-width: min-content;
+   display: flex;
+   align-items: flex-end;
+   flex-direction: row-reverse;
+   justify-content: flex-end;
+   gap: $padding-small;
 
-  @include tablet {
-    width: 25%;
-    flex-direction: column;
-
-  }
+   @include tablet {
+      width: 25%;
+      flex-direction: column;
+   }
 }
 
 .label {
-  font-style: italic;
-  margin: 0;
+   font-style: italic;
+   margin: 0;
 }

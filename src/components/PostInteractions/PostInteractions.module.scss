@@ -1,6 +1,7 @@
-@use '../../styles/variables'as*;
+@use "../../styles/variables" as *;
 
 .button_wrapper {
-  display: flex;
-  gap: $padding-medium;
+   display: flex;
+   flex-direction: column;
+   gap: $padding-medium;
 }
