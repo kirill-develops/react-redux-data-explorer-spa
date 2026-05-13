@@ -33,7 +33,7 @@ export default function Home() {
       : Styles.card_deck;
 
    useEffect(() => {
-      document.title = "Home | GlobeQuery";
+      document.title = "Home | Global Query";
    }, []);
 
    const renderContent = useCallback(() => {

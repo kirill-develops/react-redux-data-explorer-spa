@@ -27,10 +27,10 @@ const PostalLookup = () => {
    const cardDeckClass = isFetching
       ? [GlobalStyles.card_deck__postal, GlobalStyles.disabled].join(" ")
       : GlobalStyles.card_deck__postal;
-   
-    useEffect(() => {
-         document.title = "Postal Lookup | GlobeQuery";
-      }, []);
+
+   useEffect(() => {
+      document.title = "Postal Lookup | Global Query";
+   }, []);
 
    const renderContent = () => {
       if (isUninitialized)

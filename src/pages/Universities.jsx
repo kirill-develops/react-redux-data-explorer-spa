@@ -7,7 +7,7 @@ const Universities = () => {
    const [selectedCountry, setSelectedCountry] = useState("");
 
    useEffect(() => {
-      document.title = "University by Country Search | GlobeQuery";
+      document.title = "University by Country Search | Global Query";
    }, []);
 
    return (
