@@ -1,6 +1,5 @@
 {
-  "short_name": "Take-Home Code Assessment",
-  "name": "A Take-Home code assessment practicing Redux essentials",
+  "short_name": "Global Query",
   "icons": [
     {
       "src": "favicon.ico",
